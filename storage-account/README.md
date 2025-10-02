@@ -1,17 +1,17 @@
-# Storage Account - Terraform Configuration
+# Terraform Storage Account Configuration
 
-AI-generated Terraform configuration for setting up an Azure Storage Account with a blob container specifically for Terraform state files.
+AI-generated Terraform configuration for creating an Azure Storage Account with a blob container specifically for Terraform state files.
 
 ## Resources
 
-- **Resource Group**: Provisioned for organizing resources
-- **Storage Account**: Configured for blob storage with Standard LRS replication
-- **Blob Container**: Specifically for Terraform state files
+- **Resource Group**: `rg-terraform-storage`
+- **Storage Account**: Standard LRS replication with HTTPS only access
+- **Blob Container**: Private access blob container for Terraform state files
 
 ## Azure Verified Modules
 
-This configuration uses the following AVM modules:
-- `avm/res/storage/storage-account` - For creating the Azure Storage Account with specified configurations
+This configuration uses the following AVM module:
+- `avm-res-storage-storageaccount` - For creating and managing a storage account in Azure.
 
 ## Usage
 
@@ -30,14 +30,15 @@ terraform apply tfplan
 
 | Name | Description | Default |
 |------|-------------|---------|
-| location | Azure region for resources | westeurope |
-| resource_group_name | Name of the resource group | rg-terraform-example |
-| storage_account_name | Name of the storage account | stterraformexample |
+| location | Azure region | westeurope |
+| resource_group_name | Name of the resource group | rg-terraform-storage |
+| storage_account_name | Name of the storage account | stterraformstate |
+| tags | Tags for all resources | ManagedBy: Terraform, Project: TerraformStateStorage, Environment: dev |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| storage_account_id | The ID of the storage account |
-| storage_account_name | The name of the storage account |
-| containers | Created containers within the storage account |
+| storage_account_id | The ID of the Storage Account |
+| storage_account_name | The name of the Storage Account |
+| container_name | The name of the blob container for Terraform state files |

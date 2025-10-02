@@ -11,16 +11,16 @@ terraform {
 provider "azurerm" {
   features {}
   skip_provider_registration = true
+  use_cli                    = false
+  use_msi                    = false
 }
 
-# Resource Group
 resource "azurerm_resource_group" "this" {
   name     = var.resource_group_name
   location = var.location
   tags     = var.tags
 }
 
-# Storage Account Module
 module "storage_account" {
   source  = "Azure/avm-res-storage-storageaccount/azurerm"
   version = "~> 0.2"
@@ -39,5 +39,4 @@ module "storage_account" {
       container_access_type = "private"
     }
   }
-  tags = var.tags
 }
