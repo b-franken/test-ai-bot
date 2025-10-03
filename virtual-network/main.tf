@@ -11,8 +11,8 @@ terraform {
 provider "azurerm" {
   features {}
   skip_provider_registration = true
-  use_cli                   = false
-  use_msi                   = false
+  use_cli                    = false
+  use_msi                    = false
 }
 
 resource "azurerm_resource_group" "this" {
@@ -23,13 +23,13 @@ resource "azurerm_resource_group" "this" {
 
 module "virtual_network" {
   source  = "Azure/avm-res-network-virtualnetwork/azurerm"
-  version = "~> 0.12.0"
+  version = "~> 0.12"
 
-  name       = var.vnet_name
-  parent_id  = azurerm_resource_group.this.id
-  location   = var.location
-  address_space = var.address_space
+  name          = var.vnet_name
+  parent_id     = azurerm_resource_group.this.id
+  location      = var.location
+  address_space = ["10.0.0.0/16"]
+
   enable_telemetry = true
-
-  tags = var.tags
+  tags             = var.tags
 }

@@ -1,16 +1,16 @@
 # Virtual Network - Terraform Configuration
 
-AI-generated Terraform configuration for deploying a simple Virtual Network in Azure.
+AI-generated Terraform configuration for deploying a simple Azure Virtual Network.
 
 ## Resources
 
-- **Resource Group**: rg-terraform-example
-- **Virtual Network**: A basic setup with a single address space.
+- **Resource Group**: rg-terraform-vnet
+- **Virtual Network**: vnet-example
 
 ## Azure Verified Modules
 
-This configuration uses the following AVM modules:
-- `avm-res-network-virtualnetwork` - For creating a Virtual Network in Azure
+This configuration uses the following AVM module:
+- `avm/res/network/virtualnetwork` - For deploying a virtual network with customizable address space and optional subnets.
 
 ## Usage
 
@@ -29,15 +29,14 @@ terraform apply tfplan
 
 | Name | Description | Default |
 |------|-------------|---------|
-| location | Azure region | westeurope |
-| resource_group_name | Name of the resource group | rg-terraform-example |
-| vnet_name | Name of the virtual network | vnet-simple |
-| address_space | The address space for the virtual network | ["10.0.0.0/16"] |
+| location | Azure region for resources | westeurope |
+| resource_group_name | Name of the resource group | rg-terraform-vnet |
+| vnet_name | Name of the virtual network | vnet-example |
 | tags | Tags for all resources | ManagedBy: Terraform, Project: AI-Generated |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| vnet_resource_id | Resource ID of the virtual network |
-| vnet_name | Name of the virtual network |
+| vnet_resource_id | The resource ID of the virtual network. |
+| vnet_name | The name of the virtual network. |
