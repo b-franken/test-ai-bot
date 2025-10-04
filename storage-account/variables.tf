@@ -1,35 +1,35 @@
 variable "location" {
-  description = "Azure region for resources"
+  description = "Azure region where the resources will be deployed."
   type        = string
   default     = "westeurope"
 }
 
 variable "resource_group_name" {
-  description = "Name of the resource group"
+  description = "The name of the resource group."
   type        = string
-  default     = "rg-simple-storage"
+  default     = "rg-terraform-example"
 }
 
 variable "storage_account_name" {
-  description = "Name of the storage account"
+  description = "The name of the storage account."
   type        = string
-  default     = "simplestoracct"
+  default     = "storaccountexample"
 }
 
 variable "account_tier" {
-  description = "Defines the Tier to use for this storage account."
+  description = "The performance tier of the storage account."
   type        = string
   default     = "Standard"
 }
 
 variable "account_replication_type" {
-  description = "Defines the type of replication to use for this storage account."
+  description = "The replication strategy to use for this storage account."
   type        = string
   default     = "LRS"
 }
 
 variable "tags" {
-  description = "Tags for all resources"
+  description = "Tags for all resources."
   type        = map(string)
   default = {
     ManagedBy = "Terraform"

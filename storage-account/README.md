@@ -1,16 +1,16 @@
-# Simple Storage Account - Terraform Configuration
+# Storage Account - Terraform Configuration
 
-AI-generated Terraform configuration for deploying a simple Azure Storage Account.
+AI-generated Terraform configuration for deploying a simple Azure Storage Account using Azure Verified Modules.
 
 ## Resources
 
-- **Resource Group**: rg-simple-storage
-- **Storage Account**: simplestoracct
+- **Resource Group**: `rg-terraform-example`
+- **Storage Account**: Simple storage account setup with standard performance tier and locally-redundant storage replication.
 
 ## Azure Verified Modules
 
-This configuration uses the following AVM module:
-- `Azure/avm-res-storage-storageaccount/azurerm` - Deploys an Azure Storage Account with configurable parameters.
+This configuration uses the following AVM modules:
+- `Azure/avm-res-storage-storageaccount/azurerm` - To deploy a storage account with standard configuration.
 
 ## Usage
 
@@ -29,16 +29,16 @@ terraform apply tfplan
 
 | Name | Description | Default |
 |------|-------------|---------|
-| location | Azure region | westeurope |
-| resource_group_name | Name of the resource group | rg-simple-storage |
-| storage_account_name | Name of the storage account | simplestoracct |
-| account_tier | Defines the Tier to use for this storage account | Standard |
-| account_replication_type | Defines the type of replication to use for this storage account | LRS |
+| location | Azure region where the resources will be deployed. | westeurope |
+| resource_group_name | The name of the resource group. | rg-terraform-example |
+| storage_account_name | The name of the storage account. | storaccountexample |
+| account_tier | The performance tier of the storage account. | Standard |
+| account_replication_type | The replication strategy to use for this storage account. | LRS |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| storage_account_resource_id | The resource ID of the created storage account. |
-| storage_account_name | The name of the created storage account. |
-| storage_account_primary_endpoint | The primary blob endpoint of the storage account. |
+| storage_account_id | The ID of the Storage Account. |
+| storage_account_name | The name of the Storage Account. |
+| storage_account_fqdn | The FQDN for the storage services. |
