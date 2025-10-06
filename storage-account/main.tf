@@ -15,13 +15,15 @@ provider "azurerm" {
   use_msi                          = false
 }
 
+# Resource Group
 resource "azurerm_resource_group" "this" {
   name     = var.resource_group_name
   location = var.location
   tags     = var.tags
 }
 
-module "storage_account" {
+# Storage Account Module
+module "storage" {
   source  = "Azure/avm-res-storage-storageaccount/azurerm"
   version = "~> 0.6.4"
 
@@ -29,8 +31,12 @@ module "storage_account" {
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   enable_telemetry    = true
-  
+
+  account_kind             = "StorageV2"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
   infrastructure_encryption_enabled = true
-  
+
   tags = var.tags
 }
