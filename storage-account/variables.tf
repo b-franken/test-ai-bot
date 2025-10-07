@@ -10,10 +10,15 @@ variable "resource_group_name" {
   default     = "rg-terraform-example"
 }
 
-variable "storage_account_name" {
-  description = "Name of the storage account"
+variable "environment" {
+  description = "Environment name (dev, test, prod)"
   type        = string
-  default     = "storageacct"
+  default     = "dev"
+
+  validation {
+    condition     = contains(["dev", "test", "prod"], var.environment)
+    error_message = "Environment must be dev, test or prod."
+  }
 }
 
 variable "tags" {
@@ -23,4 +28,10 @@ variable "tags" {
     ManagedBy = "Terraform"
     Project   = "AI-Generated"
   }
+}
+
+variable "storage_account_name" {
+  description = "Name of the storage account"
+  type        = string
+  default     = "stterraformexample"
 }
