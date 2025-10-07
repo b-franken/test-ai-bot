@@ -1,5 +1,11 @@
 terraform {
-  required_version = ">= 1.0.0"
+  required_version = "~> 1.9"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.0"
+    }
+  }
 }
 
 provider "azurerm" {
@@ -12,25 +18,36 @@ resource "azurerm_resource_group" "this" {
   location = var.location
 }
 
-module "storage_account" {
-  source  = "Azure/avm-res-storage-storageaccount/azurerm"
+resource "random_string" "this" {
+  length  = 8
+  special = false
+  upper   = false
+  number  = true
+}
 
-  location                     = azurerm_resource_group.this.location
-  name                         = var.storage_account_name
-  resource_group_name          = azurerm_resource_group.this.name
-  account_replication_type     = "ZRS"
-  account_kind                 = "StorageV2"
-  account_tier                 = "Standard"
-  https_traffic_only_enabled   = true
-  min_tls_version              = "TLS1_2"
+module "this" {
+  source = "Azure/avm-res-storage-storageaccount/azurerm"
+
+  location                = azurerm_resource_group.this.location
+  name                    = "${var.environment}-${random_string.this.result}"
+  resource_group_name     = azurerm_resource_group.this.name
+  account_replication_type = "ZRS"
   public_network_access_enabled = false
-  infrastructure_encryption_enabled = true
-
+  https_traffic_only_enabled    = true
+  min_tls_version               = "TLS1_2"
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
   containers = {
     blob_container0 = {
-      name = "private-blob-container"
+      name = "blob-container-${random_string.this.result}-0"
     }
   }
+  tags = {
+    env   = var.environment
+    owner = "John Doe"
+    dept  = "IT"
+  }
 
-  tags = var.tags
+  # Added encryption configuration
+  infrastructure_encryption_enabled = true
 }

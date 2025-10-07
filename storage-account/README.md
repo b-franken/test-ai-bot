@@ -1,65 +1,37 @@
-# Azure Storage Account Terraform Module
+# Terraform Configuration for Azure Storage Account
 
-This Terraform configuration deploys a production-ready Azure Storage Account using the Azure Verified Modules (AVM) for Terraform. The configuration is designed to meet high availability and security standards by utilizing Zone-Redundant Storage (ZRS) replication, enforcing HTTPS-only access, and setting a minimum TLS version of 1.2.
+This Terraform configuration deploys an Azure Storage Account with the following characteristics:
 
-## Features
-- **Location**: Deploys resources in the specified Azure region.
-- **Replication**: Uses ZRS for high availability.
-- **Security**: Enforces HTTPS-only access and sets minimum TLS version to 1.2.
-- **Network**: Disables public network access for enhanced security.
-- **Storage**: Configures a private blob container.
-- **Encryption**: Enables infrastructure encryption for storage accounts.
+- **Replication Type**: Zone-redundant storage (ZRS) for high availability.
+- **Location**: East US.
+- **Network Access**: Private access only (public network access disabled).
+- **Security**: HTTPS traffic only with a minimum TLS version of 1.2.
+- **Account Type**: StorageV2 with Standard performance tier.
+- **Blob Containers**: Configured with unique names using a random string for uniqueness.
+- **Encryption**: Infrastructure encryption enabled for storage account.
+
+## Prerequisites
+
+- Ensure you have the necessary permissions to create resources in the specified Azure subscription.
+- Terraform installed on your local machine.
 
 ## Usage
 
-```hcl
-terraform {
-  required_version = ">= 1.0.0"
-}
+1. **Initialize Terraform**: Run `terraform init` to initialize the working directory.
+2. **Plan the Deployment**: Execute `terraform plan` to review the resources that will be created.
+3. **Apply the Configuration**: Use `terraform apply` to create the resources.
 
-provider "azurerm" {
-  features {}
-  resource_provider_registrations = "core"
-}
+## Variables
 
-resource "azurerm_resource_group" "this" {
-  name     = var.resource_group_name
-  location = var.location
-}
-
-module "storage_account" {
-  source  = "Azure/avm-res-storage-storageaccount/azurerm"
-
-  location                     = azurerm_resource_group.this.location
-  name                         = var.storage_account_name
-  resource_group_name          = azurerm_resource_group.this.name
-  account_replication_type     = "ZRS"
-  account_kind                 = "StorageV2"
-  account_tier                 = "Standard"
-  https_traffic_only_enabled   = true
-  min_tls_version              = "TLS1_2"
-  public_network_access_enabled = false
-  infrastructure_encryption_enabled = true
-
-  containers = {
-    blob_container0 = {
-      name = "private-blob-container"
-    }
-  }
-
-  tags = var.tags
-}
-```
-
-## Inputs
-- `location`: The Azure region where resources will be deployed.
-- `resource_group_name`: The name of the resource group.
-- `tags`: A map of tags to assign to the resources.
-- `storage_account_name`: The desired name for the storage account.
+- `resource_group_name`: The name of the resource group where the storage account will be deployed.
+- `location`: The Azure region for deployment (default is East US).
+- `environment`: The environment suffix for naming (default is "dev").
 
 ## Outputs
-- `storage_account_id`: The ID of the storage account.
-- `storage_account_name`: The name of the storage account.
+
+- `storage_account_id`: The ID of the created storage account.
+- `storage_account_primary_blob_endpoint`: The primary blob endpoint of the storage account.
 
 ## Notes
-This configuration uses the Azure Verified Modules (AVM) to ensure best practices and compliance with Azure standards. Adjust the `tags` variable as needed to fit your organizational requirements.
+
+This configuration uses the Azure Verified Modules (AVM) for deploying a storage account, ensuring best practices and compliance with Azure standards.
