@@ -14,40 +14,31 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "this" {
-  name     = var.resource_group_name
-  location = var.location
+  name     = "example-resources"
+  location = "West Europe"
 }
 
-resource "random_string" "this" {
-  length  = 8
-  special = false
-  upper   = false
-  number  = true
+module "naming" {
+  source = "Azure/naming/azurerm"
+  suffix = [var.environment]
 }
 
 module "this" {
   source = "Azure/avm-res-storage-storageaccount/azurerm"
 
-  location                = azurerm_resource_group.this.location
-  name                    = "${var.environment}-${random_string.this.result}"
-  resource_group_name     = azurerm_resource_group.this.name
+  location              = azurerm_resource_group.this.location
+  name                  = module.naming.storage_account.name_unique
+  resource_group_name   = azurerm_resource_group.this.name
+  account_kind          = "StorageV2"
   account_replication_type = "ZRS"
+  account_tier          = "Standard"
+  https_traffic_only_enabled = true
+  min_tls_version       = "TLS1_2"
   public_network_access_enabled = false
-  https_traffic_only_enabled    = true
-  min_tls_version               = "TLS1_2"
-  account_kind                  = "StorageV2"
-  account_tier                  = "Standard"
-  containers = {
-    blob_container0 = {
-      name = "blob-container-${random_string.this.result}-0"
-    }
-  }
+  infrastructure_encryption_enabled = true  # Added encryption
   tags = {
-    env   = var.environment
+    env   = "Dev"
     owner = "John Doe"
     dept  = "IT"
   }
-
-  # Added encryption configuration
-  infrastructure_encryption_enabled = true
 }
