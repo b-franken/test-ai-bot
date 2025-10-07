@@ -1,21 +1,16 @@
-# Azure Infrastructure with Storage Account - Terraform Configuration
+# Storage Account - Terraform Configuration
 
-AI-generated Terraform configuration for deploying a storage account along with a resource group, service plan, virtual network, and function app in Azure using Azure Verified Modules (AVM).
+AI-generated Terraform configuration for a production-ready Azure Storage Account in East US.
 
 ## Resources
 
-- **Resource Group**: rg-terraform-example
-- **Service Plan**: Linux plan for hosting applications
-- **Virtual Network**: Network for managing internal communications
-- **Function App**: Serverless compute service in Azure
-- **Storage Account**: Securely store data in Azure with encryption enabled
+- **Resource Group**: `rg-storage-account`
+- **Storage Account**: Configured for high availability with ZRS, private blob container, HTTPS only, and TLS 1.2 enforced.
 
 ## Azure Verified Modules
 
-This configuration uses the following AVM modules:
-- `Azure/avm-res-network-virtualnetwork/azurerm` - For creating a Virtual Network.
-- `Azure/avm-res-web-site/azurerm` - For deploying a Function App.
-- `Azure/avm-res-storage-storageaccount/azurerm` - For deploying a Storage Account with encryption.
+This configuration uses the following AVM module:
+- `Azure/avm-res-storage-storageaccount/azurerm` - Provides the storage account with the required configurations.
 
 ## Usage
 
@@ -32,16 +27,17 @@ terraform apply tfplan
 
 ## Variables
 
-| Name | Description | Default |
-|------|-------------|---------|
-| location | Azure region | westeurope |
-| resource_group_name | Name of the resource group | rg-terraform-example |
-| environment | Environment name (dev, test, prod) | dev |
-| storage_account_name | Name of the storage account | stterraformexample |
+| Name                  | Description                          | Default          |
+|-----------------------|--------------------------------------|------------------|
+| location              | Azure region                         | East US          |
+| resource_group_name   | Name of the resource group           | rg-storage-account |
+| storage_account_name  | Name of the storage account          | stgacctexample   |
+| tags                  | Tags for all resources               | Environment: Production, ManagedBy: Terraform |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| storage_account_id | The ID of the Storage Account. |
-| storage_account_name | The name of the storage account. |
+| Name                  | Description                         |
+|-----------------------|-------------------------------------|
+| storage_account_id    | The ID of the Storage Account       |
+| storage_account_name  | The name of the Storage Account     |
+| primary_blob_endpoint | The primary Blob endpoint of the Storage Account |
