@@ -1,26 +1,25 @@
 variable "location" {
-  description = "Azure region for resources"
+  description = "The location of the resource group."
   type        = string
   default     = "East US"
 }
 
 variable "resource_group_name" {
-  description = "Name of the resource group"
+  description = "The name of the resource group."
   type        = string
-  default     = "rg-storage-account"
-}
-
-variable "storage_account_name" {
-  description = "Name of the storage account"
-  type        = string
-  default     = "stgacctexample"
 }
 
 variable "tags" {
-  description = "Tags for all resources"
+  description = "A map of tags to assign to the resources."
   type        = map(string)
-  default = {
-    Environment = "Production"
-    ManagedBy   = "Terraform"
+  default     = {
+    env   = "Production"
+    owner = "John Doe"
+    dept  = "IT"
   }
+}
+
+variable "storage_account_name" {
+  description = "The desired name for the storage account."
+  type        = string
 }

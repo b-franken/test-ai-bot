@@ -1,54 +1,36 @@
 terraform {
-  required_version = ">= 1.9.0"
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.71"
-    }
-  }
+  required_version = ">= 1.0.0"
 }
 
 provider "azurerm" {
   features {}
   resource_provider_registrations = "core"
-  use_cli                          = false
-  use_msi                          = false
 }
 
 resource "azurerm_resource_group" "this" {
   name     = var.resource_group_name
   location = var.location
-  tags     = var.tags
 }
 
 module "storage_account" {
   source  = "Azure/avm-res-storage-storageaccount/azurerm"
-  version = "~> 0.6"
 
-  name                = var.storage_account_name
-  resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
-  enable_telemetry    = true
-
-  account_kind             = "StorageV2"
-  account_tier             = "Standard"
-  account_replication_type = "ZRS"
-  https_traffic_only_enabled = true
-  min_tls_version          = "TLS1_2"
+  location                     = azurerm_resource_group.this.location
+  name                         = var.storage_account_name
+  resource_group_name          = azurerm_resource_group.this.name
+  account_replication_type     = "ZRS"
+  account_kind                 = "StorageV2"
+  account_tier                 = "Standard"
+  https_traffic_only_enabled   = true
+  min_tls_version              = "TLS1_2"
+  public_network_access_enabled = false
+  infrastructure_encryption_enabled = true
 
   containers = {
-    private_container = {
-      name          = "private"
-      public_access = "None"
+    blob_container0 = {
+      name = "private-blob-container"
     }
   }
 
-  network_rules = {
-    default_action             = "Deny"
-    bypass                     = ["AzureServices"]
-    ip_rules                   = []
-    virtual_network_subnet_ids = []
-  }
-
-  infrastructure_encryption_enabled = true
+  tags = var.tags
 }
